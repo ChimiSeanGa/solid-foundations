@@ -209,7 +209,7 @@ function FlowChartContent() {
                         </button>
                     </div>
                     <div className="text-center p-4">
-                        Video for Topic {currentNode && currentNode.id} will go here!
+                        Videos for Topic {currentNode && currentNode.id} will go here!
                     </div>
                 </div>
             }
