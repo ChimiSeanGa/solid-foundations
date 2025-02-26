@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { Handle, Position, Node, NodeProps } from "@xyflow/react";
 
-type TopicNode = Node<{ topic: string, topicName: string }, 'topic'>;
+type TopicNode = Node<{ topic: string, topicName: string, clicked: boolean }, 'topic'>;
 
 function TopicNode({data} : NodeProps<TopicNode>) {
     return (
-        <div className="p-4 shadow-md rounded-2xl bg-white border-2 border-stone-400">
+        <div className={`p-4 shadow-md rounded-2xl border-2 border-stone-400 hover:ring-1 transition-colors ${data.clicked ? "bg-blue-300" : "bg-white"}`}>
             <div className="flex">
                 <div className="ml-2">
                     <div className="text-lg font-bold">

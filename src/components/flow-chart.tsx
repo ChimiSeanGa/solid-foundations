@@ -1,22 +1,28 @@
 "use client";
 
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import {
     ConnectionMode,
     ReactFlow,
     ReactFlowProvider,
     MarkerType,
+    useReactFlow,
+    useStore,
+    useNodesState,
     type Node,
     type Edge,
     type NodeTypes,
     type DefaultEdgeOptions,
 } from "@xyflow/react";
 import TopicNode from "@/components/topic-node";
+import SubjectNode from "@/components/subject-node";
 import "@xyflow/react/dist/style.css";
 import Image from "next/image";
+import { Transition } from "@headlessui/react";
 
 const nodeTypes : NodeTypes = {
     topic: TopicNode,
+    subject: SubjectNode,
 };
 
 const connectionLineStyle = { stroke: '#000', strokeWidth: 2 };
@@ -27,177 +33,71 @@ const edgeOptions : DefaultEdgeOptions = {
         color: "#000",
     },
     style: connectionLineStyle,
+    zIndex: 3000,
 };
 
-const initialNodes : Node[] = [
-    {
-        id: "A",
-        position: { x: 0, y: 0 },
-        type: "group",
-        data: {},
-        style: {
-            width: 500,
-            height: 300,
-        },
-    },
-    {
-        id: "B",
-        position: { x: 0, y: 380 },
-        type: "group",
-        data: {},
-        style: {
-            width: 500,
-            height: 300,
-        },
-    },
-    {
-        id: "1",
-        position: { x: 60, y: 30 },
-        type: "topic",
-        data: { topic: "subj1-topic1", topicName: "Topic 1" },
-        parentId: "A",
-        extent: "parent",
-    },
-    {
-        id: '2',
-        position: { x: 335, y: 30 },
-        type: "topic",
-        data: { topic: "subj1-topic2", topicName: "Topic 2" },
-        parentId: "A",
-        extent: "parent",
-    },
-    {
-        id: '3',
-        position: { x: 60, y: 210 },
-        type: "topic",
-        data: { topic: "subj1-topic3", topicName: "Topic 3" },
-        parentId: "A",
-        extent: "parent",
-    },
-    {
-        id: '4',
-        position: { x: 335, y: 210 },
-        type: "topic",
-        data: { topic: "subj1-topic4", topicName: "Topic 4" },
-        parentId: "A",
-        extent: "parent",
-    },
-    {
-        id: "5",
-        position: { x: 60, y: 30 },
-        type: "topic",
-        data: { topic: "subj2-topic1", topicName: "Topic 5" },
-        parentId: "B",
-        extent: "parent",
-    },
-    {
-        id: '6',
-        position: { x: 335, y: 30 },
-        type: "topic",
-        data: { topic: "subj2-topic2", topicName: "Topic 6" },
-        parentId: "B",
-        extent: "parent",
-    },
-    {
-        id: '7',
-        position: { x: 60, y: 210 },
-        type: "topic",
-        data: { topic: "subj2-topic3", topicName: "Topic 7" },
-        parentId: "B",
-        extent: "parent",
-    },
-    {
-        id: '8',
-        position: { x: 335, y: 210 },
-        type: "topic",
-        data: { topic: "subj2-topic4", topicName: "Topic 8" },
-        parentId: "B",
-        extent: "parent",
-    },
-];
-const initialEdges : Edge[] = [
-    {
-        id: 'e1-2',
-        source: '1',
-        target: '2',
-        sourceHandle: "right",
-        targetHandle: "left",
-    },
-    {
-        id: 'e2-3',
-        source: '2',
-        target: '3',
-        sourceHandle: "bottom",
-        targetHandle: "top",
-    },
-    {
-        id: 'e2-4',
-        source: '2',
-        target: '4',
-        sourceHandle: "bottom",
-        targetHandle: "top",
-    },
-    {
-        id: 'e5-6',
-        source: '5',
-        target: '6',
-        sourceHandle: "right",
-        targetHandle: "left",
-    },
-    {
-        id: 'e6-7',
-        source: '6',
-        target: '7',
-        sourceHandle: "bottom",
-        targetHandle: "top",
-    },
-    {
-        id: 'e6-8',
-        source: '6',
-        target: '8',
-        sourceHandle: "bottom",
-        targetHandle: "top",
-    },
-    {
-        id: 'eA-B',
-        source: 'A',
-        target: 'B',
-    },
-];
-
-function FlowChartContent() {
+function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], initialEdges: Edge[]}) {
     const [sideBarVisible, setSideBarVisible] = useState(false);
+    const [sideBarContent, setSideBarContent] = useState(false);
     const [currentNode, setCurrentNode] = useState<Node>();
+    const reactFlowInstance = useReactFlow();
+    const [nodes, setNodes] = useNodesState(initialNodes);
+
+    const widthSelector = (state: { width: number }) => state.width;
+    const heightSelector = (state: { height: number }) => state.height;
+    const reactFlowWidth = useStore(widthSelector);
+    const reactFlowHeight = useStore(heightSelector);
+
+    useEffect(() => {
+        reactFlowInstance.fitView().then();
+    }, [reactFlowWidth, reactFlowHeight, reactFlowInstance]);
 
     const onNodeClick = useCallback((event : React.MouseEvent<Element,MouseEvent>, node : Node) => {
         console.log('Node clicked:', node);
-        setCurrentNode(node);
-        setSideBarVisible(true);
-    }, []);
+        if (node.data.topic) {
+            setSideBarVisible(true);
+            setSideBarContent(false);
+
+            setNodes((nds) =>
+                nds.map((n) => {
+                    if (n.id === node.id) {
+                        return { ...n, data: { ...n.data, clicked: true } };
+                    } else {
+                        return { ...n, data: { ...n.data, clicked: false } };
+                    }
+                })
+            );
+
+            setTimeout(() => {
+                setCurrentNode(node);
+                setSideBarContent(true);
+            }, 300);
+        }
+    }, [setNodes]);
 
     return (
-        <div className="flex flex-row">
-            <div className="flex-1 rounded border border-black">
-                <div style={{ width: '100%', height: '80vh' }}>
+        <div className="flex flex-row justify-between">
+            <div className={`rounded border border-black transition-all duration-700 ${sideBarVisible ? "basis-1/2" : "flex-1"}`}>
+                <div style={{ width: '100%', height: '70vh' }}>
                     <ReactFlow
-                        nodes={initialNodes}
+                        nodes={nodes}
                         edges={initialEdges}
                         defaultEdgeOptions={edgeOptions}
                         connectionLineStyle={connectionLineStyle}
                         nodeTypes={nodeTypes}
                         nodesDraggable={false}
-                        // panOnDrag={false}
-                        // zoomOnDoubleClick={false}
-                        // zoomOnPinch={false}
-                        // zoomOnScroll={false}
+                        panOnDrag={false}
+                        zoomOnDoubleClick={false}
+                        zoomOnPinch={false}
+                        zoomOnScroll={false}
                         connectionMode={ConnectionMode.Loose}
                         onNodeClick={onNodeClick}
                         fitView
                     />
                 </div>
             </div>
-            {sideBarVisible &&
-                <div className="flex-1 rounded border border-black ml-2">
+            <Transition show={sideBarVisible}>
+                <div className={"flex-1 rounded border border-black ml-2 overflow-hidden transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
                     <div className="text-right">
                         <button onClick={() => setSideBarVisible(false)}>
                             <Image
@@ -208,19 +108,27 @@ function FlowChartContent() {
                             />
                         </button>
                     </div>
-                    <div className="text-center p-4">
-                        Videos for Topic {currentNode && currentNode.id} will go here!
-                    </div>
+                    <Transition show={sideBarContent}>
+                        <div
+                            className="text-center p-4 transition-opacity duration-300 ease-in-out data-[closed]:opacity-0">
+                            Topic {currentNode && currentNode.id}
+
+                            <iframe className="aspect-video w-full p-3" src="https://www.youtube.com/embed/6fk9ZZ4193c?si=nAaxBeE39vVswFFT"></iframe>
+                        </div>
+                    </Transition>
                 </div>
-            }
+            </Transition>
         </div>
     );
 }
 
-export default function FlowChart() {
+export default function FlowChart({initialNodes, initialEdges}: { initialNodes: Node[], initialEdges: Edge[] }) {
     return (
         <ReactFlowProvider>
-            <FlowChartContent />
+            <FlowChartContent
+                initialNodes={initialNodes}
+                initialEdges={initialEdges}
+            />
         </ReactFlowProvider>
     );
 }
