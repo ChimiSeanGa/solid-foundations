@@ -6,11 +6,30 @@ import {precalculusNodes, precalculusEdges} from "@/app/online-math/pre-calculus
 import {calculusNodes, calculusEdges} from "@/app/online-math/calculus";
 import {linearAlgebraNodes, linearAlgebraEdges} from "@/app/online-math/linear-algebra";
 import { useState } from "react";
-import { Transition } from "@headlessui/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Page() {
     const [flowName, setFlowName] = useState<string>("algebra");
-    const [transitionDone, setTransitionDone] = useState<boolean>(true);
+
+    const renderFlowChart = () => {
+        switch (flowName) {
+            case "algebra":
+                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
+            case "pre-calculus":
+                return <FlowChart initialNodes={precalculusNodes} initialEdges={precalculusEdges}></FlowChart>
+            case "calculus":
+                return <FlowChart initialNodes={calculusNodes} initialEdges={calculusEdges}></FlowChart>
+            case "linear-algebra":
+                return <FlowChart initialNodes={linearAlgebraNodes} initialEdges={linearAlgebraEdges}></FlowChart>
+        }
+    }
+
+    const variants = {
+        hidden: { opacity: 0, x: 200, y: 0 },
+        enter: { opacity: 1, x: 0, y: 0 },
+        exit: { opacity: 0, x: 0, y: 0 },
+    };
+
     return (
         <div>
             <main>
@@ -48,54 +67,20 @@ export default function Page() {
                         </button>
                     </li>
                 </ul>
-                <Transition
-                    show={flowName==="algebra" && transitionDone}
-                    beforeLeave={() => setTransitionDone(false)}
-                    afterLeave={() => setTransitionDone(true)}
-                >
-                    <div className="transition-opacity duration-200 data-[closed]:opacity-0">
-                        <FlowChart
-                            initialNodes={algebraNodes}
-                            initialEdges={algebraEdges}
-                        />
-                    </div>
-                </Transition>
-                <Transition
-                    show={flowName==="pre-calculus" && transitionDone}
-                    beforeLeave={() => setTransitionDone(false)}
-                    afterLeave={() => setTransitionDone(true)}
-                >
-                    <div className="transition-opacity duration-200 data-[closed]:opacity-0">
-                        <FlowChart
-                            initialNodes={precalculusNodes}
-                            initialEdges={precalculusEdges}
-                        />
-                    </div>
-                </Transition>
-                <Transition
-                    show={flowName==="calculus" && transitionDone}
-                    beforeLeave={() => setTransitionDone(false)}
-                    afterLeave={() => setTransitionDone(true)}
-                >
-                    <div className="transition-opacity duration-200 data-[closed]:opacity-0">
-                        <FlowChart
-                            initialNodes={calculusNodes}
-                            initialEdges={calculusEdges}
-                        />
-                    </div>
-                </Transition>
-                <Transition
-                    show={flowName==="linear-algebra" && transitionDone}
-                    beforeLeave={() => setTransitionDone(false)}
-                    afterLeave={() => setTransitionDone(true)}
-                >
-                    <div className="transition-opacity duration-200 data-[closed]:opacity-0">
-                        <FlowChart
-                            initialNodes={linearAlgebraNodes}
-                            initialEdges={linearAlgebraEdges}
-                        />
-                    </div>
-                </Transition>
+                <AnimatePresence mode="popLayout">
+                    <motion.div
+                        key={flowName}
+                        initial="hidden"
+                        animate="enter"
+                        exit="exit"
+                        variants={variants}
+                        transition={{ type: "linear" }}
+                        className="overflow-hidden"
+                    >
+                        {renderFlowChart()}
+                    </motion.div>
+                </AnimatePresence>
+
             </main>
         </div>
     );
