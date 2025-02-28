@@ -12,7 +12,7 @@ export default function Navbar() {
                             src="/solid_foundations_logo.png"
                             alt="Solid Foundations logo"
                             width={400}
-                            height={60}
+                            height={100}
                         />
                     </Link>
                 </div>
