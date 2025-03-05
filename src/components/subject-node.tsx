@@ -9,13 +9,13 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "@/components/base-node";
 
-type SubjectNode = Node<{subjectName: string}>
+type SubjectNode = Node<{subject: string}, "subject">
 
 function SubjectNode({ data, selected } : NodeProps<SubjectNode>) {
     return (
-        <BaseNode selected={selected} className="bg-gray-200/50 h-full rounded-2xl overflow-hidden p-0">
+        <BaseNode selected={selected} className="bg-gray-300/50 h-full rounded-2xl shadow-xl overflow-hidden p-0">
             <div className="bg-gray-300 w-fit p-2 text-xs rounded-br-sm bg-secondary text-card-foreground">
-                {data.subjectName}
+                {data.subject}
                 <Handle
                     id="top"
                     type="source"

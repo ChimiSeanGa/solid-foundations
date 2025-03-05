@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useCallback, useState, useEffect} from "react";
+import React, {useCallback, useState, useEffect, memo} from "react";
 import {
     ConnectionMode,
     ReactFlow,
@@ -21,7 +21,7 @@ import Image from "next/image";
 import { Transition } from "@headlessui/react";
 
 const nodeTypes : NodeTypes = {
-    topic: TopicNode,
+    topic: memo(TopicNode),
     subject: SubjectNode,
 };
 
@@ -52,9 +52,9 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
         reactFlowInstance.fitView().then();
     }, [reactFlowWidth, reactFlowHeight, reactFlowInstance]);
 
-    const onNodeClick = useCallback((event : React.MouseEvent<Element,MouseEvent>, node : Node) => {
+    const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : Node) => {
         console.log('Node clicked:', node);
-        if (node.data.topic) {
+        if (node.type === "topic") {
             setSideBarVisible(true);
             setSideBarContent(false);
 
@@ -71,13 +71,26 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
             setTimeout(() => {
                 setCurrentNode(node);
                 setSideBarContent(true);
-            }, 300);
+            }, 500);
         }
     }, [setNodes]);
 
+    const closeSideBar = () => {
+        setSideBarVisible(false);
+        setSideBarContent(false);
+
+        setNodes((nds) =>
+            nds.map((n) => {
+                return { ...n, data: { ...n.data, clicked: false } };
+            })
+        );
+    }
+
+    // @ts-ignore
+    // @ts-ignore
     return (
-        <div className="flex flex-row justify-between">
-            <div className={`rounded border border-black transition-all duration-700 ${sideBarVisible ? "basis-1/2" : "flex-1"}`}>
+        <div className="flex flex-row justify-between relative">
+            <div className={`flex-1 rounded border bg-gray-100`}>
                 <div style={{ width: '100%', height: '70vh' }}>
                     <ReactFlow
                         nodes={nodes}
@@ -92,14 +105,16 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
                         zoomOnScroll={false}
                         connectionMode={ConnectionMode.Loose}
                         onNodeClick={onNodeClick}
+                        nodeOrigin={[0.5,0.5]}
                         fitView
                     />
                 </div>
             </div>
+            <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"flex-1 rounded border border-black ml-2 overflow-hidden transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
-                    <div className="text-right">
-                        <button onClick={() => setSideBarVisible(false)}>
+                <div className={"absolute left-0 right-0 h-5/6 lg:h-auto lg:static lg:flex-1 rounded bg-gray-100 ml-3 mr-3 lg:ml-2 lg:mr-0 overflow-hidden transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                    <div className="text-right p-1">
+                        <button onClick={closeSideBar}>
                             <Image
                                 src="/close-x-svgrepo-com.svg"
                                 alt="x button to close sidebar"
@@ -110,10 +125,10 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
                     </div>
                     <Transition show={sideBarContent}>
                         <div
-                            className="text-center p-4 transition-opacity duration-300 ease-in-out data-[closed]:opacity-0">
-                            Topic {currentNode && currentNode.id}
+                            className="text-center p-4 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
+                            {currentNode && currentNode.data.topic}
 
-                            <iframe className="aspect-video w-full p-3" src="https://www.youtube.com/embed/6fk9ZZ4193c?si=nAaxBeE39vVswFFT"></iframe>
+                            {(currentNode && typeof currentNode.data.videoURL === "string") && <iframe className="aspect-video w-full p-3" src={currentNode.data.videoURL}></iframe>}
                         </div>
                     </Transition>
                 </div>
