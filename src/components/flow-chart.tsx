@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useCallback, useState, useEffect, memo} from "react";
+import React, {useCallback, useState, useEffect, useMemo} from "react";
 import {
     ConnectionMode,
     ReactFlow,
@@ -9,21 +9,15 @@ import {
     useReactFlow,
     useStore,
     useNodesState,
-    type Node,
     type Edge,
     type NodeTypes,
     type DefaultEdgeOptions,
 } from "@xyflow/react";
-import TopicNode from "@/components/topic-node";
-import SubjectNode from "@/components/subject-node";
+import { TopicNode } from "@/components/topic-node";
+import { SubjectNode } from "@/components/subject-node";
 import "@xyflow/react/dist/style.css";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
-
-const nodeTypes : NodeTypes = {
-    topic: memo(TopicNode),
-    subject: SubjectNode,
-};
 
 const connectionLineStyle = { stroke: '#000', strokeWidth: 2 };
 
@@ -36,10 +30,16 @@ const edgeOptions : DefaultEdgeOptions = {
     zIndex: 3000,
 };
 
-function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], initialEdges: Edge[]}) {
+type CustomNodeType = TopicNode | SubjectNode;
+
+function isTopicNode(node: CustomNodeType): node is TopicNode {
+    return node.type === 'topic';
+}
+
+function FlowChartContent({initialNodes, initialEdges} : {initialNodes: CustomNodeType[], initialEdges: Edge[]}) {
     const [sideBarVisible, setSideBarVisible] = useState(false);
     const [sideBarContent, setSideBarContent] = useState(false);
-    const [currentNode, setCurrentNode] = useState<Node>();
+    const [currentNode, setCurrentNode] = useState<TopicNode>();
     const reactFlowInstance = useReactFlow();
     const [nodes, setNodes] = useNodesState(initialNodes);
 
@@ -48,22 +48,31 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
     const reactFlowWidth = useStore(widthSelector);
     const reactFlowHeight = useStore(heightSelector);
 
+    const nodeTypes : NodeTypes = useMemo<NodeTypes>(() => ({
+        topic: TopicNode,
+        subject: SubjectNode,
+    }), []);
+
     useEffect(() => {
         reactFlowInstance.fitView().then();
     }, [reactFlowWidth, reactFlowHeight, reactFlowInstance]);
 
-    const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : Node) => {
+    const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : CustomNodeType) => {
         console.log('Node clicked:', node);
-        if (node.type === "topic") {
+        if (isTopicNode(node)) {
             setSideBarVisible(true);
             setSideBarContent(false);
 
             setNodes((nds) =>
                 nds.map((n) => {
-                    if (n.id === node.id) {
-                        return { ...n, data: { ...n.data, clicked: true } };
+                    if (isTopicNode(n)) {
+                        if (n.id === node.id) {
+                            return { ...n, data: { ...n.data, clicked: true } };
+                        } else {
+                            return { ...n, data: { ...n.data, clicked: false } };
+                        }
                     } else {
-                        return { ...n, data: { ...n.data, clicked: false } };
+                        return n;
                     }
                 })
             );
@@ -81,13 +90,15 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
 
         setNodes((nds) =>
             nds.map((n) => {
-                return { ...n, data: { ...n.data, clicked: false } };
+                if (isTopicNode(n)) {
+                    return { ...n, data: { ...n.data, clicked: false } };
+                } else {
+                    return n;
+                }
             })
         );
     }
 
-    // @ts-ignore
-    // @ts-ignore
     return (
         <div className="flex flex-row justify-between relative">
             <div className={`flex-1 rounded border bg-gray-100`}>
@@ -124,11 +135,9 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
                         </button>
                     </div>
                     <Transition show={sideBarContent}>
-                        <div
-                            className="text-center p-4 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
+                        <div className="text-center p-4 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
                             {currentNode && currentNode.data.topic}
-
-                            {(currentNode && typeof currentNode.data.videoURL === "string") && <iframe className="aspect-video w-full p-3" src={currentNode.data.videoURL}></iframe>}
+                            {currentNode && <iframe className="aspect-video w-full p-3" src={currentNode.data.videoURL}></iframe>}
                         </div>
                     </Transition>
                 </div>
@@ -137,7 +146,7 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: Node[], 
     );
 }
 
-export default function FlowChart({initialNodes, initialEdges}: { initialNodes: Node[], initialEdges: Edge[] }) {
+export default function FlowChart({initialNodes, initialEdges}: { initialNodes: CustomNodeType[], initialEdges: Edge[] }) {
     return (
         <ReactFlowProvider>
             <FlowChartContent
