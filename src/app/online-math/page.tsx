@@ -2,9 +2,9 @@
 
 import FlowChart from "@/components/flow-chart";
 import {algebraNodes, algebraEdges} from "@/app/online-math/algebra";
-import {precalculusNodes, precalculusEdges} from "@/app/online-math/pre-calculus";
-import {calculusNodes, calculusEdges} from "@/app/online-math/calculus";
-import {linearAlgebraNodes, linearAlgebraEdges} from "@/app/online-math/linear-algebra";
+// import {precalculusNodes, precalculusEdges} from "@/app/online-math/pre-calculus";
+// import {calculusNodes, calculusEdges} from "@/app/online-math/calculus";
+// import {linearAlgebraNodes, linearAlgebraEdges} from "@/app/online-math/linear-algebra";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,11 +16,11 @@ export default function Page() {
             case "algebra":
                 return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
             case "pre-calculus":
-                return <FlowChart initialNodes={precalculusNodes} initialEdges={precalculusEdges}></FlowChart>
+                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
             case "calculus":
-                return <FlowChart initialNodes={calculusNodes} initialEdges={calculusEdges}></FlowChart>
+                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
             case "linear-algebra":
-                return <FlowChart initialNodes={linearAlgebraNodes} initialEdges={linearAlgebraEdges}></FlowChart>
+                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
         }
     }
 

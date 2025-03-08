@@ -1,6 +1,10 @@
-import type {Edge, Node} from "@xyflow/react";
+import type {Edge} from "@xyflow/react";
+import {TopicNode} from "@/components/topic-node";
+import {SubjectNode} from "@/components/subject-node";
 
-export const algebraNodes : Node[] = [
+type CustomNodeType = TopicNode | SubjectNode;
+
+export const algebraNodes : CustomNodeType[] = [
     // Subject: Operations
     {
         id: "subject:ops",
@@ -19,6 +23,7 @@ export const algebraNodes : Node[] = [
         data: {
             topic: "Equals, Implies, and If and Only If",
             videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
         },
         parentId: "subject:ops",
         extent: "parent",
@@ -29,7 +34,8 @@ export const algebraNodes : Node[] = [
         type: "topic",
         data: {
             topic: "Algebraic Operations",
-            videoURL: "https://www.youtube.com/embed/_K3aY50R9rU?si=rahfX5cITe4DTxyJ"
+            videoURL: "https://www.youtube.com/embed/_K3aY50R9rU?si=rahfX5cITe4DTxyJ",
+            clicked: false,
         },
         parentId: "subject:ops",
         extent: "parent",
@@ -38,7 +44,11 @@ export const algebraNodes : Node[] = [
         id: "topic:exponents",
         position: { x: 130, y: 195 },
         type: "topic",
-        data: { topic: "Exponents" },
+        data: {
+            topic: "Exponents",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ops",
         extent: "parent",
     },
@@ -46,7 +56,11 @@ export const algebraNodes : Node[] = [
         id: "topic:logarithms",
         position: { x: 130, y: 265 },
         type: "topic",
-        data: { topic: "Logarithms" },
+        data: {
+            topic: "Logarithms",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ops",
         extent: "parent",
     },
@@ -54,7 +68,11 @@ export const algebraNodes : Node[] = [
         id: "topic:polynomials",
         position: { x: 370, y: 195 },
         type: "topic",
-        data: { topic: "Polynomials" },
+        data: {
+            topic: "Polynomials",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ops",
         extent: "parent",
     },
@@ -62,7 +80,11 @@ export const algebraNodes : Node[] = [
         id: "topic:rational-fns",
         position: { x: 370, y: 265 },
         type: "topic",
-        data: { topic: "Rational Functions" },
+        data: {
+            topic: "Rational Functions",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ops",
         extent: "parent",
     },
@@ -81,7 +103,11 @@ export const algebraNodes : Node[] = [
         id: "topic:ineq-abs",
         position: { x: 250, y: 55 },
         type: "topic",
-        data: { topic: "Inequalities and Absolute Value" },
+        data: {
+            topic: "Inequalities and Absolute Value",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ineq-dist",
         extent: "parent",
     },
@@ -89,7 +115,11 @@ export const algebraNodes : Node[] = [
         id: "topic:alg-with-ineq",
         position: { x: 130, y: 125 },
         type: "topic",
-        data: { topic: "Algebra with Inequalities" },
+        data: {
+            topic: "Algebra with Inequalities",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ineq-dist",
         extent: "parent",
     },
@@ -97,7 +127,11 @@ export const algebraNodes : Node[] = [
         id: "topic:alg-with-abs",
         position: { x: 370, y: 125 },
         type: "topic",
-        data: { topic: "Algebra with Absolute Values" },
+        data: {
+            topic: "Algebra with Absolute Values",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ineq-dist",
         extent: "parent",
     },
@@ -105,7 +139,11 @@ export const algebraNodes : Node[] = [
         id: "topic:sign-analysis",
         position: { x: 130, y: 195 },
         type: "topic",
-        data: { topic: "Sign Analysis" },
+        data: {
+            topic: "Sign Analysis",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:ineq-dist",
         extent: "parent",
     },
@@ -124,7 +162,11 @@ export const algebraNodes : Node[] = [
         id: "topic:2d-geom",
         position: { x: 130, y: 55 },
         type: "topic",
-        data: { topic: "2D Geometry" },
+        data: {
+            topic: "2D Geometry",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:geom",
         extent: "parent",
     },
@@ -132,7 +174,11 @@ export const algebraNodes : Node[] = [
         id: "topic:3d-geom",
         position: { x: 370, y: 55 },
         type: "topic",
-        data: { topic: "3D Geometry" },
+        data: {
+            topic: "3D Geometry",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:geom",
         extent: "parent",
     },
@@ -140,7 +186,11 @@ export const algebraNodes : Node[] = [
         id: "topic:similarity",
         position: { x: 250, y: 125 },
         type: "topic",
-        data: { topic: "Similarity" },
+        data: {
+            topic: "Similarity",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:geom",
         extent: "parent",
     },
@@ -148,7 +198,11 @@ export const algebraNodes : Node[] = [
         id: "topic:coords",
         position: { x: 250, y: 195 },
         type: "topic",
-        data: { topic: "Coordinates" },
+        data: {
+            topic: "Coordinates",
+            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            clicked: false,
+        },
         parentId: "subject:geom",
         extent: "parent",
     },
