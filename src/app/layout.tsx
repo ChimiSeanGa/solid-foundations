@@ -2,6 +2,7 @@ import "./globals.css";
 import type {Metadata} from "next";
 import Navbar from "@/components/navbar";
 import PageTransitionEffect from "@/components/page-transition-effect";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Solid Foundations",
@@ -20,9 +21,11 @@ export default function RootLayout({
       >
         <Navbar/>
         <PageTransitionEffect>
-            <div className="max-w-screen-xl m-auto">
-                {children}
-            </div>
+            <Suspense fallback={null}>
+                <div className="max-w-screen-xl m-auto">
+                    {children}
+                </div>
+            </Suspense>
         </PageTransitionEffect>
       </body>
     </html>
