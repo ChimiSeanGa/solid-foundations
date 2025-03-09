@@ -18,6 +18,7 @@ import { SubjectNode } from "@/components/subject-node";
 import "@xyflow/react/dist/style.css";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
+import { VideoContainer } from "@/components/video-container";
 
 const connectionLineStyle = { stroke: '#000', strokeWidth: 2 };
 
@@ -30,13 +31,13 @@ const edgeOptions : DefaultEdgeOptions = {
     zIndex: 3000,
 };
 
-type CustomNodeType = TopicNode | SubjectNode;
+export type CustomNodeType = TopicNode | SubjectNode;
 
 function isTopicNode(node: CustomNodeType): node is TopicNode {
     return node.type === 'topic';
 }
 
-function FlowChartContent({initialNodes, initialEdges} : {initialNodes: CustomNodeType[], initialEdges: Edge[]}) {
+function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: CustomNodeType[], initialEdges: Edge[], flowId: string}) {
     const [sideBarVisible, setSideBarVisible] = useState(false);
     const [sideBarContent, setSideBarContent] = useState(false);
     const [currentNode, setCurrentNode] = useState<TopicNode>();
@@ -100,9 +101,9 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: CustomNo
     }
 
     return (
-        <div className="flex flex-row justify-between relative">
-            <div className={`flex-1 rounded border bg-gray-100`}>
-                <div style={{ width: '100%', height: '70vh' }}>
+        <div className="flex flex-row justify-between">
+            <div className={`flex-1 rounded border bg-gray-100 overflow-y-scroll h-[70vh]`}>
+                <div style={{ width: '100%', height: '140vh' }}>
                     <ReactFlow
                         nodes={nodes}
                         edges={initialEdges}
@@ -117,27 +118,35 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: CustomNo
                         connectionMode={ConnectionMode.Loose}
                         onNodeClick={onNodeClick}
                         nodeOrigin={[0.5,0.5]}
+                        preventScrolling={false}
                         fitView
+                        id={flowId}
                     />
                 </div>
             </div>
             <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"absolute left-0 right-0 h-5/6 lg:h-auto lg:static lg:flex-1 rounded bg-gray-100 ml-3 mr-3 lg:ml-2 lg:mr-0 overflow-hidden transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
-                    <div className="text-right p-1">
-                        <button onClick={closeSideBar}>
+                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90vh] lg:h-[70vh] lg:static lg:flex-1 rounded bg-gray-100 ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                    <div className="flex p-2 text-lg bg-blue-900 align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
+                        <div className="flex-1"></div>
+                        <Transition show={sideBarContent}>
+                            <div className="flex flex-4 font-bold items-center justify-center h-full transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
+                                {currentNode && currentNode.data.topic}
+                            </div>
+                        </Transition>
+                        <button onClick={closeSideBar} className="flex-1">
                             <Image
                                 src="/close-x-svgrepo-com.svg"
                                 alt="x button to close sidebar"
-                                width={30}
-                                height={30}
+                                width={28}
+                                height={28}
+                                className="invert float-right"
                             />
                         </button>
                     </div>
                     <Transition show={sideBarContent}>
-                        <div className="text-center p-4 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
-                            {currentNode && currentNode.data.topic}
-                            {currentNode && <iframe className="aspect-video w-full p-3" src={currentNode.data.videoURL}></iframe>}
+                        <div className="transition-opacity duration-500 ease-in-out data-[closed]:opacity-0 relative p-4">
+                            {currentNode && currentNode.data.videos.map(videoData => <VideoContainer key={videoData.url} {...videoData} />)}
                         </div>
                     </Transition>
                 </div>
@@ -146,12 +155,13 @@ function FlowChartContent({initialNodes, initialEdges} : {initialNodes: CustomNo
     );
 }
 
-export default function FlowChart({initialNodes, initialEdges}: { initialNodes: CustomNodeType[], initialEdges: Edge[] }) {
+export default function FlowChart({initialNodes, initialEdges, flowId}: { initialNodes: CustomNodeType[], initialEdges: Edge[], flowId: string }) {
     return (
         <ReactFlowProvider>
             <FlowChartContent
                 initialNodes={initialNodes}
                 initialEdges={initialEdges}
+                flowId={flowId}
             />
         </ReactFlowProvider>
     );

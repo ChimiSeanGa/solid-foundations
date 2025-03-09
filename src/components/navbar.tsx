@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 import Hamburger from "hamburger-react";
+import { onlineMathTabs } from "@/app/online-math/online-math-tabs";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -35,18 +36,18 @@ export default function Navbar() {
                                     Online Math
                                 </MenuButton>
                                 <MenuItems anchor="bottom start" transition className="w-40 origin-top-right rounded-xl border border-gray-400 bg-white p-1 mt-2 shadow-lg ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0">
-                                    <MenuItem>
-                                        <Link href="/online-math" className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">Algebra</Link>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Link href="/online-math" className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">Pre-calculus</Link>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Link href="/online-math" className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">Calculus</Link>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Link href="/online-math" className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">Linear Algebra</Link>
-                                    </MenuItem>
+                                    {onlineMathTabs.map((tab) => (
+                                        <MenuItem key={tab.id}>
+                                            <Link
+                                                href={{
+                                                    pathname: "/online-math",
+                                                    query: { initFlow: tab.id}
+                                                }}
+                                                className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">
+                                                {tab.label}
+                                            </Link>
+                                        </MenuItem>
+                                    ))}
                                 </MenuItems>
                             </Menu>
                         </li>

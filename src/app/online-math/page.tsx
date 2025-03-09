@@ -1,28 +1,14 @@
 "use client";
 
 import FlowChart from "@/components/flow-chart";
-import {algebraNodes, algebraEdges} from "@/app/online-math/algebra";
-// import {precalculusNodes, precalculusEdges} from "@/app/online-math/pre-calculus";
-// import {calculusNodes, calculusEdges} from "@/app/online-math/calculus";
-// import {linearAlgebraNodes, linearAlgebraEdges} from "@/app/online-math/linear-algebra";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
+import { onlineMathTabs } from "@/app/online-math/online-math-tabs";
 
 export default function Page() {
-    const [flowName, setFlowName] = useState<string>("algebra");
-
-    const renderFlowChart = () => {
-        switch (flowName) {
-            case "algebra":
-                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
-            case "pre-calculus":
-                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
-            case "calculus":
-                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
-            case "linear-algebra":
-                return <FlowChart initialNodes={algebraNodes} initialEdges={algebraEdges}></FlowChart>
-        }
-    }
+    const searchParams = useSearchParams();
+    const [flowName, setFlowName] = useState<string>(searchParams.get("initFlow") || onlineMathTabs[0].id);
 
     const variants = {
         hidden: { opacity: 0, x: 200, y: 0 },
@@ -30,42 +16,40 @@ export default function Page() {
         exit: { opacity: 0, x: 0, y: 0 },
     };
 
+    useEffect(() => {
+        setFlowName(searchParams.get("initFlow") || onlineMathTabs[0].id);
+    }, [searchParams]);
+
+    const renderFlowChart = () => {
+        const currentTab = onlineMathTabs.find(tab => tab.id === flowName);
+        if (currentTab) {
+            return <FlowChart initialNodes={currentTab.nodes} initialEdges={currentTab.edges} flowId={currentTab.id} />
+        }
+        return null;
+    }
+
     return (
         <div>
             <main>
-                <ul className="flex flex-row w-full p-4">
-                    <li className="flex-1 text-center">
-                        <button
-                            className={`px-3 py-2 rounded-2xl transition-colors ${flowName === "algebra" ? "bg-blue-300" : "bg-gray-200"}`}
-                            onClick={() => setFlowName("algebra")}
-                        >
-                            Algebra
-                        </button>
-                    </li>
-                    <li className="flex-1 text-center">
-                        <button
-                            className={`px-3 py-2 rounded-2xl transition-colors ${flowName === "pre-calculus" ? "bg-blue-300" : "bg-gray-200"}`}
-                            onClick={() => setFlowName("pre-calculus")}
-                        >
-                            Pre-calculus
-                        </button>
-                    </li>
-                    <li className="flex-1 text-center">
-                        <button
-                            className={`px-3 py-2 rounded-2xl transition-colors ${flowName === "calculus" ? "bg-blue-300" : "bg-gray-200"}`}
-                            onClick={() => setFlowName("calculus")}
-                        >
-                            Calculus
-                        </button>
-                    </li>
-                    <li className="flex-1 text-center">
-                        <button
-                            className={`px-3 py-2 rounded-2xl transition-colors ${flowName === "linear-algebra" ? "bg-blue-300" : "bg-gray-200"}`}
-                            onClick={() => setFlowName("linear-algebra")}
-                        >
-                            Linear Algebra
-                        </button>
-                    </li>
+                <ul className="flex flex-row w-full p-2 border-t border-t-gray-300 border-b border-b-gray-300 mb-2">
+                    {onlineMathTabs.map(onlineMathTab => (
+                        <li className="flex-1 text-center" key={onlineMathTab.id}>
+                            <button
+                                className={`px-3 py-2 relative bg-transparent rounded-full`}
+                                onClick={() => setFlowName(onlineMathTab.id)}
+                            >
+                                {flowName === onlineMathTab.id &&
+                                    <motion.span
+                                        layoutId="bubble"
+                                        className="absolute inset-0 z-[-10] bg-blue-300 mix-blend-difference"
+                                        style={{ borderRadius: 9999 }}
+                                        transition={{ type: "spring", bounce: 0.2, duration: 1 }}
+                                    />
+                                }
+                                {onlineMathTab.label}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
                 <AnimatePresence mode="popLayout">
                     <motion.div
@@ -74,7 +58,7 @@ export default function Page() {
                         animate="enter"
                         exit="exit"
                         variants={variants}
-                        transition={{ type: "linear" }}
+                        transition={{ type: "linear", duration: 0.5 }}
                         className="overflow-hidden"
                     >
                         {renderFlowChart()}

@@ -1,8 +1,5 @@
 import type {Edge} from "@xyflow/react";
-import {TopicNode} from "@/components/topic-node";
-import {SubjectNode} from "@/components/subject-node";
-
-type CustomNodeType = TopicNode | SubjectNode;
+import { type CustomNodeType } from "@/components/flow-chart";
 
 export const algebraNodes : CustomNodeType[] = [
     // Subject: Operations
@@ -21,8 +18,14 @@ export const algebraNodes : CustomNodeType[] = [
         position: { x: 250, y: 55 },
         type: "topic",
         data: {
-            topic: "Equals, Implies, and If and Only If",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            topic: "Equality and Implication",
+            videos: [
+                {
+                    title: "Equality and Implication",
+                    url: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+                    description: "In this video, explain the mathematical meaning of equality and implication, and introduce their notation.",
+                }
+            ],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -34,7 +37,18 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Algebraic Operations",
-            videoURL: "https://www.youtube.com/embed/_K3aY50R9rU?si=rahfX5cITe4DTxyJ",
+            videos: [
+                {
+                    title: "Properties of Algebraic Operations 1",
+                    url: "https://www.youtube.com/embed/QQPpLG6HOtg?si=mdtLu7Wrae0XFAFj",
+                    description: "In this video, we introduce the basic algebraic operations of addition, subtraction, multiplication, and division. We also study their core properties."
+                },
+                {
+                    title: "Properties of Algebraic Operations 2",
+                    url: "https://www.youtube.com/embed/j6OzlcBCC6g?si=4H3lo-fJG6v8HISb",
+                    description: "In this video, we study the more advanced consequences of the core properties.  In particular, we give a comprehensive overview, along with examples and common misconceptions, of the most frequently used properties of algebraic expressions and equations."
+                }
+            ],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -46,7 +60,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Exponents",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -58,7 +72,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Logarithms",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -70,7 +84,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Polynomials",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -82,7 +96,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Rational Functions",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ops",
@@ -105,7 +119,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Inequalities and Absolute Value",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ineq-dist",
@@ -117,7 +131,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Algebra with Inequalities",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ineq-dist",
@@ -129,7 +143,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Algebra with Absolute Values",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ineq-dist",
@@ -141,7 +155,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Sign Analysis",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:ineq-dist",
@@ -164,7 +178,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "2D Geometry",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:geom",
@@ -176,7 +190,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "3D Geometry",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:geom",
@@ -188,7 +202,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Similarity",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:geom",
@@ -200,7 +214,7 @@ export const algebraNodes : CustomNodeType[] = [
         type: "topic",
         data: {
             topic: "Coordinates",
-            videoURL: "https://www.youtube.com/embed/6fk9ZZ4193c?si=uEGuLj1zQuuHchtO",
+            videos: [],
             clicked: false,
         },
         parentId: "subject:geom",
