@@ -479,16 +479,6 @@ export const algebraEdges : Edge[] = [
 	style: {
       strokeWidth: 3,
       stroke: '#4c6f91',
-	  type: "simplebezier",
-		markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 10,
-      height: 10,
-      color: '#4c6f91',
-    },
-	style: {
-      strokeWidth: 3,
-      stroke: '#4c6f91',
 },
 },
     },
