@@ -1,5 +1,8 @@
 import type {Edge} from "@xyflow/react";
+import { ReactFlow, Background, MarkerType } from '@xyflow/react';
 import { type CustomNodeType } from "@/components/flow-chart";
+
+
 
 export const algebraNodes : CustomNodeType[] = [
     // Subject: Operations
@@ -230,6 +233,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:alg-ops',
         sourceHandle: "bottom",
         targetHandle: "top",
+		 type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'alg-ops->exponents',
@@ -237,6 +251,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:exponents',
         sourceHandle: "left",
         targetHandle: "top",
+	    type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'alg-ops->polynomials',
@@ -244,6 +269,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:polynomials',
         sourceHandle: "right",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'exponents->logarithms',
@@ -251,6 +287,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:logarithms',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'exponents->polynomials',
@@ -258,6 +305,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:polynomials',
         sourceHandle: "right",
         targetHandle: "left",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'polynomials->rationals-fns',
@@ -265,6 +323,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:rational-fns',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     // Subject: Inequalities and Distance
     {
@@ -273,6 +342,17 @@ export const algebraEdges : Edge[] = [
         target: 'subject:ineq-dist',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'ineq-abs->alg-with-ineq',
@@ -280,6 +360,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:alg-with-ineq',
         sourceHandle: "left",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'ineq-abs->alg-with-abs',
@@ -287,6 +378,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:alg-with-abs',
         sourceHandle: "right",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'alg-with-ineq->alg-with-abs',
@@ -294,6 +396,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:alg-with-abs',
         sourceHandle: "right",
         targetHandle: "left",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: 'alg-with-ineq->sign-analysis',
@@ -301,6 +414,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:sign-analysis',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     // Subject: Geometry
     {
@@ -309,6 +433,17 @@ export const algebraEdges : Edge[] = [
         target: 'subject:geom',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: '2d-geom->similarity',
@@ -316,6 +451,17 @@ export const algebraEdges : Edge[] = [
         target: 'topic:similarity',
         sourceHandle: "right",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
     {
         id: '3d-geom->similarity',
@@ -323,6 +469,28 @@ export const algebraEdges : Edge[] = [
         target: 'topic:similarity',
         sourceHandle: "left",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+	  type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
+},
     },
     {
         id: 'similarity->coords',
@@ -330,5 +498,16 @@ export const algebraEdges : Edge[] = [
         target: 'topic:coords',
         sourceHandle: "bottom",
         targetHandle: "top",
+		type: "simplebezier",
+		markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 10,
+      height: 10,
+      color: '#4c6f91',
+    },
+	style: {
+      strokeWidth: 3,
+      stroke: '#4c6f91',
+},
     },
 ];

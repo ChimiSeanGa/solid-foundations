@@ -102,7 +102,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
 
     return (
         <div className="flex flex-row justify-between">
-            <div className={`flex-1 rounded border bg-gray-100 overflow-y-scroll h-[70vh]`}>
+            <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50 overflow-y-scroll h-[70vh]`}>
                 <div style={{ width: '100%', height: '140vh' }}>
                     <ReactFlow
                         nodes={nodes}
@@ -126,8 +126,9 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
             </div>
             <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90vh] lg:h-[70vh] lg:static lg:flex-1 rounded bg-gray-100 ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
-                    <div className="flex p-2 text-lg bg-blue-900 align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
+                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90vh] lg:h-[70vh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                    <div className="flex p-2 text-lg bg-gradient-to-br from-[#003262]/100  to-[#003262]/50
+					align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
                         <div className="flex-1"></div>
                         <Transition show={sideBarContent}>
                             <div className="flex flex-4 font-bold items-center justify-center h-full transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">

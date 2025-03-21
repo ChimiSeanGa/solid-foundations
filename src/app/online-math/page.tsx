@@ -35,13 +35,13 @@ export default function Page() {
                     {onlineMathTabs.map(onlineMathTab => (
                         <li className="flex-1 text-center" key={onlineMathTab.id}>
                             <button
-                                className={`px-3 py-2 relative bg-transparent rounded-full`}
+                                className={`px-3 py-2 ${flowName === onlineMathTab.id ? "text-white font-bold" : ""} relative bg-transparent rounded-full`}
                                 onClick={() => setFlowName(onlineMathTab.id)}
                             >
                                 {flowName === onlineMathTab.id &&
                                     <motion.span
                                         layoutId="bubble"
-                                        className="absolute inset-0 z-[-10] bg-blue-300 mix-blend-difference"
+                                        className="absolute inset-0 z-[-10] bg-gradient-to-br from-[#003262]/100   to-[#003262]/70  mix-blend-difference"
                                         style={{ borderRadius: 9999 }}
                                         transition={{ type: "spring", bounce: 0.2, duration: 1 }}
                                     />

@@ -6,7 +6,7 @@ export type TopicNode = Node<{ topic: string, videos: VideoContainer[], clicked:
 
 export function TopicNode({data} : NodeProps<TopicNode>) {
     return (
-        <div className={`font-main-font p-2 shadow-md rounded-2xl border-2 border-stone-400 hover:ring-1 transition-colors ${data.clicked ? "bg-blue-300" : "bg-white"}`}>
+     <div className={`font-main-font p-2 shadow-md rounded-md  border-hidden  hover:bg-[#003262] hover:text-white  ${data.clicked ? "bg-gradient-to-br from-[#003262]  to-[#003262]/50 text-white font-bold" : "bg-gradient-to-br from-[#99adc0]  to-[#e5eaef]"}`}>
             <div className="text-sm">
                 {data.topic}
             </div>
