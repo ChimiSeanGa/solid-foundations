@@ -1,5 +1,5 @@
 import type {Edge} from "@xyflow/react";
-import { ReactFlow, Background, MarkerType } from '@xyflow/react';
+import { MarkerType } from '@xyflow/react';
 import { type CustomNodeType } from "@/components/flow-chart";
 
 
