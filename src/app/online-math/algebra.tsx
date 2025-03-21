@@ -480,7 +480,6 @@ export const algebraEdges : Edge[] = [
       strokeWidth: 3,
       stroke: '#4c6f91',
 },
-},
     },
     {
         id: 'similarity->coords',
