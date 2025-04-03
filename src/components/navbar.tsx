@@ -35,7 +35,7 @@ export default function Navbar() {
                                 <MenuButton className="block py-2 px-3 whitespace-nowrap text-center m-auto">
                                     Online Math
                                 </MenuButton>
-                                <MenuItems anchor="bottom start" transition className="w-40 origin-top-right rounded-xl border border-gray-400 bg-white p-1 mt-2 shadow-lg ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0">
+                                <MenuItems anchor="bottom start" transition className="z-[1000] w-40 origin-top-right rounded-xl border border-gray-400 bg-white p-1 mt-2 shadow-lg ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0">
                                     {onlineMathTabs.map((tab) => (
                                         <MenuItem key={tab.id}>
                                             <Link
@@ -43,6 +43,7 @@ export default function Navbar() {
                                                     pathname: "/online-math",
                                                     query: { initFlow: tab.id}
                                                 }}
+                                                onClick={() => setMenuOpen(false)}
                                                 className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 transition hover:text-blue-600">
                                                 {tab.label}
                                             </Link>
@@ -52,13 +53,13 @@ export default function Navbar() {
                             </Menu>
                         </li>
                         <li className="text-center mr-5 ml-5 flex-1 shrink transition hover:text-blue-600">
-                            <Link href="/math1" className="block py-2 px-3 whitespace-nowrap">Math 1</Link>
+                            <Link href="/math1" className="block py-2 px-3 whitespace-nowrap" onClick={() => setMenuOpen(false)}>Math 1</Link>
                         </li>
                         <li className="text-center mr-5 ml-5 flex-1 shrink transition hover:text-blue-600">
-                            <Link href="/team" className="block py-2 px-3">Team</Link>
+                            <Link href="/team" className="block py-2 px-3" onClick={() => setMenuOpen(false)}>Team</Link>
                         </li>
                         <li className="text-center mr-5 ml-5 flex-1 shrink transition hover:text-blue-600">
-                            <Link href="/contact" className="block py-2 px-3">Contact</Link>
+                            <Link href="/contact" className="block py-2 px-3" onClick={() => setMenuOpen(false)}>Contact</Link>
                         </li>
                     </ul>
                 </div>

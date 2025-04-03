@@ -9,6 +9,7 @@ import {
     useReactFlow,
     useStore,
     useNodesState,
+    getNodesBounds,
     type Edge,
     type NodeTypes,
     type DefaultEdgeOptions,
@@ -23,11 +24,17 @@ import { VideoContainer } from "@/components/video-container";
 const connectionLineStyle = { stroke: '#000', strokeWidth: 2 };
 
 const edgeOptions : DefaultEdgeOptions = {
+    type: "simplebezier",
     markerEnd: {
         type: MarkerType.ArrowClosed,
-        color: "#000",
+        width: 10,
+        height: 10,
+        color: "#4c6f91",
     },
-    style: connectionLineStyle,
+    style: {
+        strokeWidth: 3,
+        stroke: "#4c6f91",
+    },
     zIndex: 3000,
 };
 
@@ -57,6 +64,32 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
     useEffect(() => {
         reactFlowInstance.fitView().then();
     }, [reactFlowWidth, reactFlowHeight, reactFlowInstance]);
+
+    // We want the ReactFlow container div dimensions to match the aspect
+    // ratio of the nodes bounding box.
+    //
+    // Note: this will only take effect when the container height is set to "auto".
+    //
+    // Essentially, when the bounding box becomes too thin, we want the height
+    // to decrease, otherwise the nodes will be centered too low.
+    const containerAspect = () => {
+        const nodesBounds = getNodesBounds(nodes);
+        return nodesBounds.width / nodesBounds.height;
+    }
+
+    // When the container becomes thinner than the nodes bounding box,
+    // the container should match the aspect ratio of the bounding box.
+    //
+    // Otherwise, we can set the height to be larger, say 150%.
+    const containerHeight = () => {
+        const nodesBounds = getNodesBounds(nodes);
+        const nodesRatio = nodesBounds.width / nodesBounds.height;
+        const flowRatio = reactFlowWidth / reactFlowHeight;
+        if (flowRatio < nodesRatio) {
+            return "auto";
+        }
+        return "150%";
+    }
 
     const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : CustomNodeType) => {
         console.log('Node clicked:', node);
@@ -103,7 +136,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
     return (
         <div className="flex flex-row justify-between">
             <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50 overflow-y-scroll h-[70vh]`}>
-                <div style={{ width: '100%', height: '140vh' }}>
+                <div style={{ width: '100%', aspectRatio: containerAspect(), height: containerHeight() }}>
                     <ReactFlow
                         nodes={nodes}
                         edges={initialEdges}
@@ -126,7 +159,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
             </div>
             <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90vh] lg:h-[70vh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90svh] lg:h-[70svh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
                     <div className="flex p-2 text-lg bg-gradient-to-br from-[#003262]/100  to-[#003262]/50
 					align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
                         <div className="flex-1"></div>

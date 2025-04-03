@@ -31,11 +31,11 @@ export default function Page() {
     return (
         <div>
             <main>
-                <ul className="flex flex-row w-full p-2 border-t border-t-gray-300 border-b border-b-gray-300 mb-2">
+                <ul className="flex flex-row w-full p-1 mb-2">
                     {onlineMathTabs.map(onlineMathTab => (
                         <li className="flex-1 text-center" key={onlineMathTab.id}>
                             <button
-                                className={`px-3 py-2 ${flowName === onlineMathTab.id ? "text-white font-bold" : ""} relative bg-transparent rounded-full`}
+                                className={`px-3 py-2 ${flowName === onlineMathTab.id ? "text-white font-bold" : ""} relative bg-transparent rounded-full h-full text-sm sm:text-base`}
                                 onClick={() => setFlowName(onlineMathTab.id)}
                             >
                                 {flowName === onlineMathTab.id &&
