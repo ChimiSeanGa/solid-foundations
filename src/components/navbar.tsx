@@ -12,7 +12,7 @@ export default function Navbar() {
 
     return (
         <nav>
-            <div className="max-w-screen-xl flex flex-col lg:flex-row items-center justify-between mx-auto">
+            <div className="max-w-screen-xl flex flex-col lg:flex-row items-center justify-between mx-auto lg:bg-gradient-to-r from-white via-white  to-[#FDB515]/40">
                 <div className="flex w-full lg:w-auto items-center">
                     <div className="pl-2 pr-2 flex-1">
                         <Link href="/" className="cursor-pointer">

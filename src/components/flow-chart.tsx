@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useCallback, useState, useEffect, useMemo} from "react";
+import React, {useCallback, useState, useEffect, useMemo, useRef} from "react";
 import {
     ConnectionMode,
     ReactFlow,
@@ -50,6 +50,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
     const [currentNode, setCurrentNode] = useState<TopicNode>();
     const reactFlowInstance = useReactFlow();
     const [nodes, setNodes] = useNodesState(initialNodes);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     const widthSelector = (state: { width: number }) => state.width;
     const heightSelector = (state: { height: number }) => state.height;
@@ -77,18 +78,28 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
         return nodesBounds.width / nodesBounds.height;
     }
 
-    // When the container becomes thinner than the nodes bounding box,
+    // When the flow container becomes thinner than the nodes bounding box,
     // the container should match the aspect ratio of the bounding box.
     //
-    // Otherwise, we can set the height to be larger, say 150%.
+    // The exception to this is if the resulting height of the flow container
+    // is larger than 150% of the height of the parent container, in which
+    // case we cap the height at 150%.
+    //
+    // Otherwise, we can set the height to be 150%.
     const containerHeight = () => {
+        const heightCap = 1.5;
         const nodesBounds = getNodesBounds(nodes);
         const nodesRatio = nodesBounds.width / nodesBounds.height;
         const flowRatio = reactFlowWidth / reactFlowHeight;
-        if (flowRatio < nodesRatio) {
-            return "auto";
+
+        if (containerRef.current) {
+            const containerWidth = containerRef.current.clientWidth;
+            const containerHeight = containerRef.current.clientHeight;
+            if (flowRatio < nodesRatio && containerWidth/nodesRatio < containerHeight*heightCap) {
+                return "auto";
+            }
         }
-        return "150%";
+        return (heightCap*100).toFixed(0)+"%";
     }
 
     const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : CustomNodeType) => {
@@ -135,7 +146,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
 
     return (
         <div className="flex flex-row justify-between">
-            <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50 overflow-y-scroll h-[70vh]`}>
+            <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50 overflow-y-scroll h-[70vh]`} ref={containerRef}>
                 <div style={{ width: '100%', aspectRatio: containerAspect(), height: containerHeight() }}>
                     <ReactFlow
                         nodes={nodes}
