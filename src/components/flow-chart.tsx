@@ -47,6 +47,7 @@ function isTopicNode(node: CustomNodeType): node is TopicNode {
 function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: CustomNodeType[], initialEdges: Edge[], flowId: string}) {
     const [sideBarVisible, setSideBarVisible] = useState(false);
     const [sideBarContent, setSideBarContent] = useState(false);
+    const [flowVisible, setFlowVisible] = useState(true);
     const [currentNode, setCurrentNode] = useState<TopicNode>();
     const reactFlowInstance = useReactFlow();
     const [nodes, setNodes] = useNodesState(initialNodes);
@@ -132,6 +133,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
     const closeSideBar = () => {
         setSideBarVisible(false);
         setSideBarContent(false);
+        setFlowVisible(true);
 
         setNodes((nds) =>
             nds.map((n) => {
@@ -144,36 +146,68 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
         );
     }
 
+    const expandSideBar = () => {
+        setFlowVisible(false);
+    }
+
+    const unexpandSideBar = () => {
+        setFlowVisible(true);
+    }
+
     return (
         <div className="flex flex-row justify-between">
-            <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50 overflow-y-scroll h-[70vh]`} ref={containerRef}>
-                <div style={{ width: '100%', aspectRatio: containerAspect(), height: containerHeight() }}>
-                    <ReactFlow
-                        nodes={nodes}
-                        edges={initialEdges}
-                        defaultEdgeOptions={edgeOptions}
-                        connectionLineStyle={connectionLineStyle}
-                        nodeTypes={nodeTypes}
-                        nodesDraggable={false}
-                        panOnDrag={false}
-                        zoomOnDoubleClick={false}
-                        zoomOnPinch={false}
-                        zoomOnScroll={false}
-                        connectionMode={ConnectionMode.Loose}
-                        onNodeClick={onNodeClick}
-                        nodeOrigin={[0.5,0.5]}
-                        preventScrolling={false}
-                        fitView
-                        id={flowId}
-                    />
+            <Transition show={flowVisible}>
+                <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-200 overflow-y-scroll h-[70vh] transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`} ref={containerRef}>
+                    <div style={{ width: '100%', aspectRatio: containerAspect(), height: containerHeight() }}>
+                        <ReactFlow
+                            nodes={nodes}
+                            edges={initialEdges}
+                            defaultEdgeOptions={edgeOptions}
+                            connectionLineStyle={connectionLineStyle}
+                            nodeTypes={nodeTypes}
+                            nodesDraggable={false}
+                            panOnDrag={false}
+                            zoomOnDoubleClick={false}
+                            zoomOnPinch={false}
+                            zoomOnScroll={false}
+                            connectionMode={ConnectionMode.Loose}
+                            onNodeClick={onNodeClick}
+                            nodeOrigin={[0.5,0.5]}
+                            preventScrolling={false}
+                            fitView
+                            id={flowId}
+                        />
+                    </div>
                 </div>
-            </div>
+            </Transition>
             <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90svh] lg:h-[70svh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-100/50  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
-                    <div className="flex p-2 text-lg bg-gradient-to-br from-[#003262]/100  to-[#003262]/50
+                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90svh] lg:h-[70svh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-200  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                    <div className="flex p-2 text-lg bg-gradient-to-br from-bk-blue-800  to-bk-blue-500
 					align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
-                        <div className="flex-1"></div>
+                        <div className="flex-1 invisible lg:visible">
+                            {
+                                flowVisible ?
+                                    <button onClick={expandSideBar} className="float-left h-full">
+                                        <Image
+                                            src="/left-arrow-backup-2-svgrepo-com.svg"
+                                            alt="button to expand the sidebar"
+                                            width={25}
+                                            height={25}
+                                            className="invert"
+                                        />
+                                    </button> :
+                                    <button onClick={unexpandSideBar} className="float-left h-full">
+                                        <Image
+                                            src="/right-arrow-backup-2-svgrepo-com.svg"
+                                            alt="button to un-expand the sidebar"
+                                            width={25}
+                                            height={25}
+                                            className="invert"
+                                        />
+                                    </button>
+                            }
+                        </div>
                         <Transition show={sideBarContent}>
                             <div className="flex flex-4 font-bold items-center justify-center h-full transition-opacity duration-500 ease-in-out data-[closed]:opacity-0">
                                 {currentNode && currentNode.data.topic}

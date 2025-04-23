@@ -31,7 +31,7 @@ export default function Page() {
     return (
         <div>
             <main>
-                <ul className="flex flex-row w-full p-1 mb-2">
+                <ul className="flex flex-row w-full p-1 mt-1 mb-1 border-t border-t-gray-300 border-b border-b-gray-300">
                     {onlineMathTabs.map(onlineMathTab => (
                         <li className="flex-1 text-center" key={onlineMathTab.id}>
                             <button

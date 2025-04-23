@@ -12,7 +12,15 @@ export default {
   	extend: {
   		colors: {
   			background: 'var(--background)',
-  			foreground: 'var(--foreground)'
+  			foreground: 'var(--foreground)',
+			'bk-blue-800': '#003262',
+			'bk-blue-500': '#4c6486',
+			'bk-blue-300': '#99adc0',
+			'bk-blue-100': '#e5eaef',
+			'bk-gold-800': '#FDB515',
+			'bk-gold-500': '#f4cf84',
+			'bk-gold-300': '#f4e3c0',
+			'bk-gold-100': '#f7f1e4',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
