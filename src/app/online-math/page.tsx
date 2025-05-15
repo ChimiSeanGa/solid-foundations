@@ -31,7 +31,7 @@ export default function Page() {
     return (
         <div>
             <main>
-                <ul className="flex flex-row w-full p-1 mt-1 mb-1 border-t border-t-gray-300 border-b border-b-gray-300">
+                <ul className="flex flex-row w-full p-1 mt-1 mb-1 border-t border-t-gray-300 border-b border-b-gray-300 sticky top-0 z-10 bg-white">
                     {onlineMathTabs.map(onlineMathTab => (
                         <li className="flex-1 text-center" key={onlineMathTab.id}>
                             <button
@@ -41,7 +41,7 @@ export default function Page() {
                                 {flowName === onlineMathTab.id &&
                                     <motion.span
                                         layoutId="bubble"
-                                        className="absolute inset-0 z-[-10] bg-gradient-to-br from-[#003262]/100   to-[#003262]/70  mix-blend-difference"
+                                        className="absolute inset-0 z-[-10] bg-gradient-to-br from-bk-blue-800  to-bk-blue-500"
                                         style={{ borderRadius: 9999 }}
                                         transition={{ type: "spring", bounce: 0.2, duration: 1 }}
                                     />

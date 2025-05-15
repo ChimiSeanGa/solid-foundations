@@ -67,40 +67,9 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
         reactFlowInstance.fitView().then();
     }, [reactFlowWidth, reactFlowHeight, reactFlowInstance]);
 
-    // We want the ReactFlow container div dimensions to match the aspect
-    // ratio of the nodes bounding box.
-    //
-    // Note: this will only take effect when the container height is set to "auto".
-    //
-    // Essentially, when the bounding box becomes too thin, we want the height
-    // to decrease, otherwise the nodes will be centered too low.
     const containerAspect = () => {
         const nodesBounds = getNodesBounds(nodes);
-        return nodesBounds.width / nodesBounds.height;
-    }
-
-    // When the flow container becomes thinner than the nodes bounding box,
-    // the container should match the aspect ratio of the bounding box.
-    //
-    // The exception to this is if the resulting height of the flow container
-    // is larger than 150% of the height of the parent container, in which
-    // case we cap the height at 150%.
-    //
-    // Otherwise, we can set the height to be 150%.
-    const containerHeight = () => {
-        const heightCap = 1.5;
-        const nodesBounds = getNodesBounds(nodes);
-        const nodesRatio = nodesBounds.width / nodesBounds.height;
-        const flowRatio = reactFlowWidth / reactFlowHeight;
-
-        if (containerRef.current) {
-            const containerWidth = containerRef.current.clientWidth;
-            const containerHeight = containerRef.current.clientHeight;
-            if (flowRatio < nodesRatio && containerWidth/nodesRatio < containerHeight*heightCap) {
-                return "auto";
-            }
-        }
-        return (heightCap*100).toFixed(0)+"%";
+        return nodesBounds.width/nodesBounds.height;
     }
 
     const onNodeClick = useCallback((_ : React.MouseEvent<Element,MouseEvent>, node : CustomNodeType) => {
@@ -157,8 +126,8 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
     return (
         <div className="flex flex-row justify-between">
             <Transition show={flowVisible}>
-                <div className={`flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-200 overflow-y-scroll h-[70vh] transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`} ref={containerRef}>
-                    <div style={{ width: '100%', aspectRatio: containerAspect(), height: containerHeight() }}>
+                <div className={`flex-1 rounded bg-gradient-to-br max-w-2xl m-auto transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`} style={{aspectRatio: containerAspect()}} ref={containerRef}>
+                    <div style={{ width: "100%", height: "100%", margin: "auto" }}>
                         <ReactFlow
                             nodes={nodes}
                             edges={initialEdges}
@@ -180,9 +149,10 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
                     </div>
                 </div>
             </Transition>
-            <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50`}></div>
+            <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50 z-20`}></div>
+            <div className={`${sideBarVisible && flowVisible ? "hidden lg:block" : "hidden"} border-l-2`}></div>
             <Transition show={sideBarVisible}>
-                <div className={"absolute left-0 right-0 top-0 mt-10 h-[90svh] lg:h-[70svh] lg:static lg:flex-1 rounded bg-gradient-to-br from-gray-100 to-gray-200  ml-3 mr-3 lg:ml-2 lg:mr-0 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0"}>
+                <div className={`absolute left-0 right-0 top-0 mt-10 lg:static lg:flex-1 z-20 lg:z-0 rounded bg-white ml-3 mr-3 lg:ml-2 lg:mr-2 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`}>
                     <div className="flex p-2 text-lg bg-gradient-to-br from-bk-blue-800  to-bk-blue-500
 					align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
                         <div className="flex-1 invisible lg:visible">
