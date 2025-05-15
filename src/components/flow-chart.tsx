@@ -77,6 +77,8 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
         if (isTopicNode(node)) {
             setSideBarVisible(true);
             setSideBarContent(false);
+            document.body.classList.toggle('overflow-hidden', true);
+            document.body.classList.toggle('lg:overflow-auto', true);
 
             setNodes((nds) =>
                 nds.map((n) => {
@@ -103,6 +105,8 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
         setSideBarVisible(false);
         setSideBarContent(false);
         setFlowVisible(true);
+        document.body.classList.toggle('overflow-hidden', false);
+        document.body.classList.toggle('lg:overflow-auto', false);
 
         setNodes((nds) =>
             nds.map((n) => {
@@ -152,7 +156,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
             <div className={`${sideBarVisible ? "block" : "hidden"} lg:hidden fixed top-0 left-0 w-screen h-screen bg-black/50 z-20`}></div>
             <div className={`${sideBarVisible && flowVisible ? "hidden lg:block" : "hidden"} border-l-2`}></div>
             <Transition show={sideBarVisible}>
-                <div className={`absolute left-0 right-0 top-0 mt-10 lg:static lg:flex-1 z-20 lg:z-0 rounded bg-white ml-3 mr-3 lg:ml-2 lg:mr-2 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`}>
+                <div className={`fixed left-0 right-0 top-0 bottom-10 mt-10 lg:static lg:flex-1 z-20 lg:z-0 rounded bg-white ml-3 mr-3 lg:ml-2 lg:mr-2 lg:mt-0 overflow-y-scroll transition-all duration-500 ease-in-out data-[closed]:grow-0 data-[closed]:opacity-0`}>
                     <div className="flex p-2 text-lg bg-gradient-to-br from-bk-blue-800  to-bk-blue-500
 					align-middle text-white sticky top-0 shadow-lg shadow-gray-400 z-10 text-center h-12">
                         <div className="flex-1 invisible lg:visible">
@@ -194,7 +198,7 @@ function FlowChartContent({initialNodes, initialEdges, flowId} : {initialNodes: 
                         </button>
                     </div>
                     <Transition show={sideBarContent}>
-                        <div className="transition-opacity duration-500 ease-in-out data-[closed]:opacity-0 relative p-4">
+                        <div className="transition-opacity duration-100 ease-in-out data-[closed]:opacity-0 relative p-4">
                             {currentNode && currentNode.data.videos.map(videoData => <VideoContainer key={videoData.url} {...videoData} />)}
                         </div>
                     </Transition>
