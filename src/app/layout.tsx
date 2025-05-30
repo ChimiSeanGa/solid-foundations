@@ -3,6 +3,7 @@ import type {Metadata} from "next";
 import Navbar from "@/components/navbar";
 import PageTransitionEffect from "@/components/page-transition-effect";
 import { Suspense } from "react";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
     title: "Solid Foundations",
@@ -25,6 +26,7 @@ export default function RootLayout({
                 <div className="max-w-screen-xl m-auto">
                     {children}
                 </div>
+                <Footer/>
             </Suspense>
         </PageTransitionEffect>
       </body>

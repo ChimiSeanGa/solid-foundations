@@ -13,6 +13,10 @@ body {
   font-family: Avenir, sans-serif;
 }
 
+a {
+  @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
+}
+
 @layer base {
   :root {
     --radius: 0.5rem;

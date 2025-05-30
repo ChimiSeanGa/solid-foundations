@@ -12,7 +12,7 @@ export default function Navbar() {
 
     return (
         <nav>
-            <div className="max-w-screen-xl flex flex-col lg:flex-row items-center justify-between mx-auto lg:bg-gradient-to-r from-white via-white  to-[#FDB515]/40">
+            <div className="max-w-screen-xl flex flex-col lg:flex-row items-center justify-between mx-auto mb-4 lg:bg-gradient-to-r from-white via-white  to-[#FDB515]/40">
                 <div className="flex w-full lg:w-auto items-center">
                     <div className="pl-2 pr-2 flex-1">
                         <Link href="/" className="cursor-pointer">
@@ -28,14 +28,14 @@ export default function Navbar() {
                         <Hamburger toggled={menuOpen} toggle={setMenuOpen} />
                     </div>
                 </div>
-                <div className={`${menuOpen ? "max-h-60" : "max-h-0"} bg-gray-700 lg:bg-transparent overflow-hidden transition-max-height duration-300 ease-in-out lg:max-h-max w-full lg:w-auto text-white lg:text-black`}>
+                <div className={`${menuOpen ? "max-h-60" : "max-h-0"} bg-gray-700 lg:bg-transparent overflow-hidden transition-max-height duration-300 ease-in-out lg:max-h-max w-full lg:w-auto text-white lg:text-black [&_a]:no-underline [&_a]:text-inherit`}>
                     <ul className="flex flex-col lg:flex-row p-4">
                         <li className="text-center mr-5 ml-5 flex-1 shrink transition hover:border-blue-600 hover:text-blue-600">
                             <Menu>
                                 <MenuButton className="block py-2 px-3 whitespace-nowrap text-center m-auto">
                                     Online Math
                                 </MenuButton>
-                                <MenuItems anchor="bottom start" transition className="z-[1000] w-40 origin-top-right rounded-xl border border-gray-400 bg-white p-1 mt-2 shadow-lg ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0">
+                                <MenuItems anchor="bottom start" transition className="z-[1000] w-40 origin-top-right rounded-xl border border-gray-400 bg-white p-1 mt-2 shadow-lg ring-black/5 transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 [&_a]:no-underline [&_a]:text-inherit">
                                     {onlineMathTabs.map((tab) => (
                                         <MenuItem key={tab.id}>
                                             <Link
