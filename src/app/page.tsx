@@ -3,6 +3,27 @@ import * as motion from "motion/react-client"
 import Link from "next/link";
 
 export default function Page() {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+                staggerChildren: 0.4,
+            }
+        },
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+            }
+        },
+    }
+
     return (
         <div>
             <main>
@@ -49,35 +70,35 @@ export default function Page() {
                     </div>
                 </motion.div>
 
-                <div className="w-full flex flex-col lg:flex-row mt-2 gap-4">
+                <motion.div
+                    className="w-full flex flex-col lg:flex-row mt-2 gap-4"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once:true, amount: 0.5 }}
+                >
                     <motion.div
                         className="flex-1 bg-gradient-to-br from-bk-blue-300 to-bk-blue-100 p-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1, transition: { duration: 0.5, delay: 0.2 }}}
-                        viewport={{once:true, amount: 0.7}}
+                        variants={itemVariants}
                     >
                         <h1 className="text-2xl font-bold">Learn at your pace</h1>
                         <p className="text-lg mt-4">While an in-person lecture is a great setting to ask questions and fix misunderstandings, it can be difficult to follow along, especially if the material is brand new to you. Everybody learns at their own pace. Our lecture videos are intended to be paused at any moment, giving you time to think through a definition or attempt a calculation before moving on.</p>
                     </motion.div>
                     <motion.div
                         className="flex-1 bg-gradient-to-br from-bk-blue-300 to-bk-blue-100 p-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1, transition: { duration: 0.5, delay: 0.5 }}}
-                        viewport={{once:true, amount: 0.7}}
+                        variants={itemVariants}
                     >
                         <h1 className="text-2xl font-bold">Study with direction</h1>
                         <p className="text-lg mt-4">It can be quite intimidating to figure out which order you should learn math concepts. Textbooks contain so much material that it&apos;s not always clear which topics can be skipped, and which topics are of fundamental importance. Our website makes use of flowcharts for each subject, so that you have a clear direction for studying. Each topic node in a flowchart has one or more self-contained video lectures. The video lectures are designed to filter the concepts down to a digestible amount of information.</p>
                     </motion.div>
                     <motion.div
                         className="flex-1 bg-gradient-to-br from-bk-blue-300 to-bk-blue-100 p-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1, transition: { duration: 0.5, delay: 0.9 }}}
-                        viewport={{once:true, amount: 0.7}}
+                        variants={itemVariants}
                     >
                         <h1 className="text-2xl font-bold">Watch lectures from anywhere</h1>
                         <p className="text-lg mt-4">Whether you are sitting at a desktop computer at home, using a laptop at the coffee shop, or scrolling your phone on the train, you have easy access to our material. Solid Foundations was designed with a mobile-first mindset, so navigating the subject flowcharts and watching video lectures is seamless no matter where you are.</p>
                     </motion.div>
-                </div>
+                </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0 }}
